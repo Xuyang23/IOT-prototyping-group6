@@ -1,4 +1,5 @@
 #include <DHT11.h>
+// Remember to add the library for the temperature and humidity sensor, use the "DHT11 by Dhruba Saha" in Arduino IDE.
 
 DHT11 dht11(6);
 
