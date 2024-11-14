@@ -39,19 +39,37 @@ void loop() {
   Serial.print("packageID = ");
   Serial.println(packageID);
 
-  LoraSerial.print("radio tx ");
-  char test_str[16] = "Hello, World!";
+  // Prepare the message to send
+  char test_str[16] = "Hello";
   String hexMessage = asciiToHex(test_str);
-  LoraSerial.println(hexMessage);
+
+  // Print the message to the Serial Monitor before sending it
+  Serial.print("Sending message: ");
+  Serial.println(hexMessage);  // Print the hex string of the message
   
+  LoraSerial.print("radio tx ");
+  LoraSerial.println(hexMessage);  // Send the message via LoRa
+  // Wait for the response and print it
   str = LoraSerial.readStringUntil('\n');
-  Serial.println(str);
+  if (str.length() > 0) {
+    Serial.println(str);
+  } else {
+    Serial.println("Timeout waiting for response");
+  }
+
+  // Check again for response (depending on your LoRa module setup)
   str = LoraSerial.readStringUntil('\n');
-  Serial.println(str);
+  if (str.length() > 0) {
+    Serial.println(str);
+  } else {
+    Serial.println("Timeout waiting for response");
+  }
+
   led_off();
-  delay(20000);
+  delay(2000);  // Wait for 2 seconds before sending the next message
   packageID = packageID + 1;
 }
+
 
 void init_lora() {
   // Initialize LoRa module with configuration settings
@@ -60,7 +78,7 @@ void init_lora() {
   
   send_lora_command("radio set mod lora");  // Set modulation to LoRa
   send_lora_command("radio set freq 869100000");  // Set frequency
-  send_lora_command("radio set pwr 1");  // Set power
+  send_lora_command("radio set pwr 14");  // Set power
   send_lora_command("radio set sf sf7");  // Set spreading factor
   send_lora_command("radio set afcbw 41.7");  // Set auto frequency correction bandwidth
   send_lora_command("radio set rxbw 125");  // Set receiver bandwidth
@@ -77,15 +95,17 @@ void send_lora_command(String command) {
   // Send LoRa command and print response
   Serial.println(command);
   LoraSerial.println(command);
-  str = LoraSerial.readStringUntil('\n');
-  Serial.println(str);  // Print response from LoRa module
+  if (wait_for_ok()) { // Wait for "ok" confirmation
+    Serial.println("Command executed successfully.");
+  } else {
+    Serial.println("Failed to execute command.");
+  }
 }
 
-void lora_autobaud()
-{
+void lora_autobaud() {
   String response = "";
-  while (response == "")
-  {
+  unsigned long startMillis = millis();
+  while (response == "" && millis() - startMillis < 5000) {  // Timeout after 5 seconds
     delay(1000);
     LoraSerial.write((byte)0x00);
     LoraSerial.write(0x55);
@@ -93,28 +113,31 @@ void lora_autobaud()
     LoraSerial.println("sys get ver");
     response = LoraSerial.readStringUntil('\n');
   }
+  if (response == "") {
+    Serial.println("Autobaud failed!");
+  } else {
+    Serial.println("Autobaud successful!");
+  }
 }
 
 /*
  * This function blocks until the word "ok\n" is received on the UART,
  * or until a timeout of 3*5 seconds.
  */
-int wait_for_ok()
-{
+int wait_for_ok() {
   str = LoraSerial.readStringUntil('\n');
-  if ( str.indexOf("ok") == 0 ) {
+  if (str.indexOf("ok") == 0) {
     return 1;
+  } else {
+    return 0;
   }
-  else return 0;
 }
 
-void led_on()
-{
+void led_on() {
   digitalWrite(LED_BUILTIN, HIGH);
 }
 
-void led_off()
-{
+void led_off() {
   digitalWrite(LED_BUILTIN, LOW);
 }
 
@@ -122,7 +145,11 @@ String asciiToHex(String asciiString) {
   String hexString = "";
   for (int i = 0; i < asciiString.length(); i++) {
     char c = asciiString.charAt(i);
-    hexString += String(c, HEX);
+    String hexChar = String(c, HEX);
+    if (hexChar.length() == 1) {
+      hexChar = "0" + hexChar; // Ensure two-digit hex values
+    }
+    hexString += hexChar;
   }
   return hexString;
 }

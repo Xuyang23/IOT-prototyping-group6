@@ -25,7 +25,7 @@ void setup() {
   LoraSerial.setTimeout(1000);
   
   // Initialize LoRa with the required settings
-  lora_init();
+  lora_init(); // Initialize LoRa module
   
   led_on();  // Turn on LED to indicate initialization
   delay(1000);  // Wait for 1 second
@@ -55,20 +55,19 @@ void loop() {
   Serial.println("waiting for a message");
   LoraSerial.println("radio rx 0");  // Start receiving
   str = LoraSerial.readStringUntil('\n');  // Read the incoming message
-  Serial.println(str);  // Print the received message
+  Serial.println(str);  // Print the ok
   delay(20);  // Delay for stability
   
-  if (str.indexOf("ok") == 0) {  // Check if the radio has entered receive mode
-    str = String("");  // Clear the string before reading new data
+  if (str.length() > 0 && str.indexOf("ok") == 0) {  // Check if the radio has entered receive mode
+    str = String("");  
     while (str == "") {
-      str = LoraSerial.readStringUntil('\n');  // Read until newline
+      str = LoraSerial.readStringUntil('\n');  // Read until " "
+      Serial.println(str);  // Print raw received hex data
     }
     if (str.indexOf("radio_rx") == 0) {  // Check if data is received
       toggle_led();  // Toggle the LED to indicate data received
-      str = LoraSerial.readStringUntil('\n');  // Read the actual received data
-      String asciiString = hexToAscii(str);  // Convert hex to ASCII
-      Serial.println(asciiString);  // Print ASCII string
-      Serial.println(str);  // Print raw received hex data
+      String receivedData = str.substring(str.indexOf("radio_rx") + 10);  // +9 to skip "radio_rx "
+      Serial.println(receivedData);  // Print raw received hex data
     } else {
       Serial.println("Received nothing");  // If no data received
     }
@@ -77,6 +76,7 @@ void loop() {
     delay(1000);  // Wait before retrying
   }
 }
+
 
 // Function to initialize LoRa module with specific settings
 void lora_init() {
@@ -108,6 +108,10 @@ void send_lora_command(String command) {
   Serial.println(command);  // Print the command to Serial Monitor
   LoraSerial.println(command);  // Send command to LoRa module
   str = LoraSerial.readStringUntil('\n');  // Read the response from LoRa module
+  while (str.length() == 0) {  // Retry until we get a valid response
+    str = LoraSerial.readStringUntil('\n');
+    delay(100);  // Avoid busy-wait
+  }
   Serial.println(str);  // Print the response
 }
 
@@ -152,6 +156,9 @@ void led_off() {
 
 // Function to convert hex string to ASCII string
 String hexToAscii(String hex) {
+  if (hex.length() % 2 != 0) {
+    hex = "0" + hex;  // Prepend '0' if the string length is odd
+  }
   String asciiString = "";
   for (size_t i = 0; i < hex.length(); i += 2) {
     String byteString = hex.substring(i, i + 2);  // Get two characters from hex string
