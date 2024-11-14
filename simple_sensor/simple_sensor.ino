@@ -1,5 +1,7 @@
 #include <DHT11.h>
 // Remember to add the library for the temperature and humidity sensor, use the "DHT11 by Dhruba Saha" in Arduino IDE.
+// connection for DHT11 sensor, left to right: pin 1 to digital 6 (6), pin 2 to VCC, pin 3 to GND.
+// Connection for photoresistor, left to right: pin 1 to analog 2 (A2), pin 2 to VCC, pin 3 to GND.  
 
 DHT11 dht11(6);
 
