@@ -14,6 +14,31 @@ String asciiToHex(String asciiString);
 void init_lora(); // Function to initialize LoRa settings
 void send_lora_command(String command); // Function to send LoRa commands and print response
 
+// Function to convert a float array to a hexadecimal string
+String floatArrayToHex(float floatArray[], int size) {
+  String hexString = "";
+
+  // Use a union to convert between float and byte array
+  union {
+    float f;
+    uint8_t bytes[4];
+  } value;
+
+  for (int i = 0; i < size; i++) {
+    value.f = floatArray[i];  // Store the float value into the union
+
+    // Convert each byte of the float to a two-character hexadecimal string
+    for (int j = 3; j >= 0; j--) {  // Traverse from most significant to least significant byte
+      if (value.bytes[j] < 0x10) {
+        hexString += "0";  // Add leading zero for single-digit hex numbers
+      }
+      hexString += String(value.bytes[j], HEX);
+    }
+  }
+
+  return hexString;
+}
+
 void setup() {
   //output LED pin
   pinMode(LED_BUILTIN, OUTPUT);  // D7 on ESP8266
@@ -40,15 +65,15 @@ void loop() {
   Serial.println(packageID);
 
   // Prepare the message to send
-  char test_str[16] = "Hello";
-  String hexMessage = asciiToHex(test_str);
+  float floatData[3] = {3.1415,3.1415,132.887};
+  String hexString = floatArrayToHex(floatData, 3);
 
   // Print the message to the Serial Monitor before sending it
   Serial.print("Sending message: ");
-  Serial.println(hexMessage);  // Print the hex string of the message
+  Serial.println(hexString);  // Print the hex string of the message
   
   LoraSerial.print("radio tx ");
-  LoraSerial.println(hexMessage);  // Send the message via LoRa
+  LoraSerial.println(hexString);  // Send the message via LoRa
   // Wait for the response and print it
   str = LoraSerial.readStringUntil('\n');
   if (str.length() > 0) {
