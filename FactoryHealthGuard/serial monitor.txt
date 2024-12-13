@@ -1,0 +1,45 @@
+08:43:55.097 -> When using OTAA, register this DevEUI: 
+08:43:55.203 -> 0004A30B01045DB4
+08:43:55.243 -> RN2xx3 firmware version:
+08:43:55.357 -> RN2483 1.0.5 Oct 31 2018 15:06:52
+08:43:55.393 -> Trying to join TTN
+08:44:04.643 -> Successfully joined TTN
+08:44:04.643 -> Hex representation of float data: 41c0000041e8000040400000
+08:44:04.643 -> Byte Array: 0xAA, 0x41, 0xC0, 0x00, 0x00, 0x41, 0xE8, 0x00, 0x00, 0x40, 0x40, 0x00, 0x00
+08:44:04.699 -> Start transmitting Data!
+08:44:14.911 -> Message send successfully
+08:44:16.728 -> sys get ver
+08:44:16.816 -> Failed to execute command.
+08:44:16.816 -> mac pause
+08:44:16.816 -> Failed to execute command.
+08:44:16.848 -> radio set mod lora
+08:44:16.848 -> radio set freq 869100000
+08:44:16.886 -> radio set pwr 14
+08:44:16.918 -> radio set sf sf7
+08:44:16.965 -> radio set afcbw 41.7
+08:44:16.997 -> radio set rxbw 125
+08:44:16.997 -> radio set prlen 8
+08:44:17.029 -> radio set crc on
+08:44:17.062 -> radio set iqi off
+08:53:41.180 -> Received data: 
+08:53:41.180 -> radio_rx  41C0000041E8000040000000
+08:53:41.180 -> 41C0000041E8000040000000
+08:53:41.180 -> Converted float array:
+08:53:41.180 -> 24.00 29.00 2.00 
+08:53:41.180 -> Environment is Unsafe
+08:53:56.245 -> When using OTAA, register this DevEUI: 
+08:53:56.368 -> 0004A30B01045DB4
+08:53:56.404 -> RN2xx3 firmware version:
+08:53:56.565 -> RN2483 1.0.5 Oct 31 2018 15:06:52
+08:53:56.565 -> Trying to join TTN
+08:54:08.556 -> Successfully joined TTN
+08:54:08.624 -> Hex representation of float data: 41c0000041e8000040000000
+08:54:08.624 -> Byte Array: 0xAA, 0x41, 0xC0, 0x00, 0x00, 0x41, 0xE8, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00
+08:54:08.627 -> Start transmitting Data!
+08:54:19.848 -> Message send successfully
+08:54:21.635 -> sys get ver
+08:54:21.678 -> Failed to execute command.
+08:54:21.678 -> mac pause
+08:54:21.710 -> Failed to execute command.
+08:54:21.710 -> radio set mod lora
+08:54:21.710 -> radio set freq 869100000
