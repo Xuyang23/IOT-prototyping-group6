@@ -8,20 +8,20 @@
 
 1. Install the RN2483 Library: https://github.com/jpmeijers/RN2483-Arduino-Library in your Arduino IDE.
 
-2. 
-Pro Mini pin 11 <------> RX on RN2483
+
+2. Pro Mini pin 11 <------> RX on RN2483
+      
+   Pro Mini pin 10 <------> TX on RN2483
    
-Pro Mini pin 10 <------> TX on RN2483
-
-Pro Mini Vcc <------> 3.3V on RN2483
-
-Pro Mini GND <------> GND on RN2483
-
-Pro Mini pin 12 <------> RST on RN2483
-
-redPin  3  <------> D3 on Pro Mini
-
-greenPin  4  <------> D4 on Pro Mini
+   Pro Mini Vcc <------> 3.3V on RN2483
+   
+   Pro Mini GND <------> GND on RN2483
+   
+   Pro Mini pin 12 <------> RST on RN2483
+   
+   redPin  3  <------> D3 on Pro Mini
+   
+   greenPin  4  <------> D4 on Pro Mini
 
 bluePin  5  <------> D5 on Pro Mini
 
