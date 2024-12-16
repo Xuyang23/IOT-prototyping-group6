@@ -19,12 +19,12 @@
    
    Pro Mini pin 12 <------> RST on RN2483
    
-   redPin  3  <------> D3 on Pro Mini
+   RGBredPin  3  <------> D3 on Pro Mini
    
-   greenPin  4  <------> D4 on Pro Mini
+   RGBgreenPin  4  <------> D4 on Pro Mini
 
-bluePin  5  <------> D5 on Pro Mini
+   RGBbluePin  5  <------> D5 on Pro Mini
 
-noisePin  8  <------> D8 for noise
+   BuzzernoisePin  8  <------> D8 for noise
 
 
